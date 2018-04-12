@@ -1,17 +1,4 @@
-// This application will first display all of the items available for sale. Include the ids, names, and prices of products for sale.
-// The app should then prompt users with two messages.
-    // The first should ask them the ID of the product they would like to buy.
-    // The second message should ask how many units of the product they would like to buy.
-
-// Once the customer has placed the order, your application should check if your store has enough of the product to meet the customer's request.
-
-// If not, the app should log a phrase like Insufficient quantity!, and then prevent the order from going through.
-
-// However, if your store does have enough of the product, you should fulfill the customer's order.
-// This means updating the SQL database to reflect the remaining quantity.
-// Once the update goes through, show the customer the total cost of their purchase.
-
-// initialize with "npm init -y", "npm install mysql"
+// initialize with "npm init -y", "npm install mysql", "npm install inquirer"
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 
@@ -25,7 +12,80 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
     if (err) throw err;
-    //runSearch();
-    console.log(res);
-    connection.end();
-});
+    // console.log('connected as id ' + connection.threadId + '\n');
+    // connection.end();
+    currentInventory();
+})
+
+// First display all of the items available for sale.
+function currentInventory() {
+    console.log("Welcome to WHAMazon! - Here is the current inventory:\n");
+    console.log("# | Product Name | Department | Price\n--------------------------------------------------");
+    connection.query("SELECT * FROM products", function(err, res) {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+            console.log(res[i].item_id + " | " + res[i].product_name + " | " + res[i].department_name + " | " + "$" + res[i].price);
+        };
+        console.log("--------------------------------------------------\n");
+
+        inquirer.prompt(
+            {
+              name:"customerChoice",
+              type:"confirm",
+              message:"Would you like to make a purchase?",
+              default: true
+            }
+        ).then(function(response){
+            if (response.customerChoice === true) {
+                setTimeout(function(){purchase()},2000);
+            } else {
+                console.log("You are missing out on great WHAM merchandise!\n***** CONNECTION TERMINATED *****\n");
+                connection.end();
+            };
+        });
+    });
+}
+
+// Ask them the ID of the product they would like to buy.
+// Ask how many units of the product they would like to buy.
+function purchase() {
+    inquirer.prompt([
+        {
+            name: "item_id",
+            type: "input",
+            message: "Enter the id# of the product you would like to purchase."
+        },
+        {
+            name: "quantity",
+            type: "input",
+            message: "What quantity do you wish to purchase?"
+        }
+    ]).then(function(requested) {
+        // Once the customer has placed the order, your application should check if your store has enough of the product to meet the customer's request.
+        //console.log(requested.item_id);
+        connection.query("SELECT * FROM products WHERE ?", { item_id: requested.item_id }, function(err, res) {
+            //console.log(res[0].stock_quantity);
+            var productName = res[0].product_name;
+            var unitPrice = res[0].price;
+            var inStock = res[0].stock_quantity;
+
+            // If your store has enough of the product, fulfill the order.
+            // Update whamazon_db to reflect the new quantity.
+            // Show the total cost of their purchase.
+            if (inStock >= requested.quantity) {
+                var stockUpdate = inStock - requested.quantity;
+                var purchaseCost = unitPrice * requested.quantity;
+
+                connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: stockUpdate},{item_id: requested.item_id}], 
+                    function(err, res) {
+                        console.log("Your total cost for " + requested.quantity + " " + productName + " is $" + purchaseCost + "\nThank you for shopping with WHAMazon!\n--------------------------------------------------\n");
+                    }
+                );
+            // If not, the app should log a phrase like Insufficient quantity!, and then prevent the order from going through.
+            } else {
+                console.log("Sorry, we do not have " + requested.quantity + " of " + productName + " in stock.\n");
+            }
+            setTimeout(function(){currentInventory()},8000);
+        });
+    });
+}
