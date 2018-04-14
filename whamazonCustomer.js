@@ -1,6 +1,7 @@
 // initialize with "npm init -y", "npm install mysql", "npm install inquirer"
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var Table = require("cli-table");
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -20,13 +21,20 @@ connection.connect(function(err) {
 // First display all of the items available for sale.
 function currentInventory() {
     console.log("Welcome to WHAMazon! - Here is the current inventory:\n");
-    console.log("# | Product Name | Department | Price\n--------------------------------------------------");
+    // console.log("# | Product Name | Department | Price\n--------------------------------------------------");
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
+        // cli-table code
+        var table = new Table({
+            head: ["id#", "Product Name", "Product Type", "Price"],
+            colWidths: [5, 30, 20, 10]
+        });
         for (var i = 0; i < res.length; i++) {
-            console.log(res[i].item_id + " | " + res[i].product_name + " | " + res[i].department_name + " | " + "$" + res[i].price);
+            table.push([res[i].item_id, res[i].product_name, res[i].department_name, "$" + res[i].price]);
+            // console.log(res[i].item_id + " | " + res[i].product_name + " | " + res[i].department_name + " | " + "$" + res[i].price);
         };
-        console.log("--------------------------------------------------\n");
+        console.log(table.toString());
+        // console.log("--------------------------------------------------\n");
 
         inquirer.prompt(
             {
@@ -85,7 +93,8 @@ function purchase() {
             } else {
                 console.log("Sorry, we do not have " + requested.quantity + " of " + productName + " in stock.\n");
             }
-            setTimeout(function(){currentInventory()},8000);
+            //setTimeout(function(){currentInventory()},8000);
+            currentInventory();
         });
     });
 }
