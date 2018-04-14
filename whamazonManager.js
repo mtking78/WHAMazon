@@ -7,7 +7,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "2631mountain",
+    password: "",
     database: "whamazon_db"
 });
 
@@ -163,3 +163,35 @@ function addInventoryUpdate() {
 }
 
 // - If a manager selects Add New Product, it should allow the manager to add a completely new product to the store.
+function addNewProduct() {
+    inquirer.prompt([
+        {
+            name: "product_name",
+            type: "input",
+            message: "Enter the name of the product you would like to add to the WHAMazon database."
+        },
+        {
+            name: "department_name",
+            type: "input",
+            message: "Enter the name of the product type (department)."
+        },
+        {
+            name: "price",
+            type: "input",
+            message: "Enter the unit price in dollars and cents."
+        },
+        {
+            name: "quantity",
+            type: "input",
+            message: "How many units are being added?"
+        }
+    ]).then(function(newProduct) {
+        //console.log(requested.item_id);
+        connection.query("INSERT INTO products SET ?", { product_name: newProduct.product_name, department_name: newProduct.department_name, price: newProduct.price, stock_quantity: newProduct.quantity,}, function(err, res) {
+
+            var productName = newProduct.product_name;
+            console.log(productName + " has been added to the inventory.\n--------------------------------------------------\n");
+            setTimeout(function(){manager()},2000);
+        });
+    });
+}
