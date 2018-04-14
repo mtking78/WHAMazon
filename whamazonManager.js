@@ -104,6 +104,62 @@ function viewLowInventory() {
 }
 
 // - If a manager selects Add to Inventory, your app should display a prompt that will let the manager "add more" of any item currently in the store.
+function addInventory() {
 
+    console.log("Here is the all current inventory:\n");
+    //console.log("# | Product Name | In Stock\n--------------------------------------------------");
+
+    connection.query("SELECT item_id, product_name, stock_quantity FROM products", function(err, res) {
+
+        if (err) throw err;
+
+        // cli-table code
+        var table3 = new Table({
+            head: ["id#", "Product Name", "in-Stock"],
+            colWidths: [5, 30, 15]
+        });
+
+        for (var i = 0; i < res.length; i++) {
+            table3.push([res[i].item_id, res[i].product_name, res[i].stock_quantity]);
+            //console.log(res[i].item_id + " | " + res[i].product_name + " | " + res[i].stock_quantity);
+        };
+
+        console.log(table3.toString() + "\n");
+        //console.log("--------------------------------------------------\n");
+        setTimeout(function(){addInventoryUpdate()},2000);
+    })
+}
+
+function addInventoryUpdate() {
+    inquirer.prompt([
+        {
+            name: "item_id",
+            type: "input",
+            message: "Enter the id# of the product you would like to add inventory for."
+        },
+        {
+            name: "quantity",
+            type: "input",
+            message: "How many units are being added?"
+        }
+    ]).then(function(added) {
+        //console.log(requested.item_id);
+        connection.query("SELECT * FROM products WHERE ?", { item_id: added.item_id }, function(err, res) {
+            //console.log(res[0].stock_quantity);
+            var productName = res[0].product_name;
+            var inStock = res[0].stock_quantity;
+            var addStock = inStock + parseInt(added.quantity);
+
+            connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: addStock},{item_id: added.item_id}],
+                function(err, res) {
+                    console.log("Inventory updated for " + productName + "\n");
+                }
+            );
+
+            console.log("--------------------------------------------------\n");
+            setTimeout(function(){manager()},2000);
+        });
+    });
+}
 
 // - If a manager selects Add New Product, it should allow the manager to add a completely new product to the store.

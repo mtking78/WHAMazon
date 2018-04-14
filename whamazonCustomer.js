@@ -81,8 +81,8 @@ function purchase() {
             // Update whamazon_db to reflect the new quantity.
             // Show the total cost of their purchase.
             if (inStock >= requested.quantity) {
-                var stockUpdate = inStock - requested.quantity;
-                var purchaseCost = unitPrice * requested.quantity;
+                var stockUpdate = inStock - parseInt(requested.quantity);
+                var purchaseCost = unitPrice * parseInt(requested.quantity);
 
                 connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: stockUpdate},{item_id: requested.item_id}], 
                     function(err, res) {
