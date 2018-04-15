@@ -32,3 +32,7 @@ VALUES  ("George Michael", "musician", 6306.25, 1),
         ("I'm Your Man", "single", 1.95, 300), 
         ("The Edge of Heaven", "single", 1.95, 300), 
         ("Where Did Your Heart Go?", "single", 1.95, 300);
+
+SELECT * FROM whamazon_db.products;
+ALTER TABLE products
+ADD product_sales FLOAT(8,2) DEFAULT 0;

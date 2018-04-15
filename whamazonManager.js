@@ -28,7 +28,8 @@ function manager() {
                 "View Products for Sale",
                 "View Low Inventory",
                 "Add to Inventory",
-                "Add New Product"
+                "Add New Product",
+                "End Session"
             ]
         }
     ).then(function(answer) {
@@ -45,6 +46,9 @@ function manager() {
             case "Add New Product":
                 addNewProduct();
                 break;
+            case "End Session":
+                console.log("Goodbye, master.\n***** CONNECTION TERMINATED *****\n");
+                connection.end();
         }
     });
 }

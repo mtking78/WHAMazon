@@ -45,7 +45,7 @@ function currentInventory() {
             }
         ).then(function(response){
             if (response.customerChoice === true) {
-                setTimeout(function(){purchase()},2000);
+                setTimeout(function(){purchase()},500);
             } else {
                 console.log("You are missing out on great WHAM merchandise!\n***** CONNECTION TERMINATED *****\n");
                 connection.end();
@@ -76,6 +76,7 @@ function purchase() {
             var productName = res[0].product_name;
             var unitPrice = res[0].price;
             var inStock = res[0].stock_quantity;
+            var sales = res[0].product_sales;
 
             // If your store has enough of the product, fulfill the order.
             // Update whamazon_db to reflect the new quantity.
@@ -83,8 +84,9 @@ function purchase() {
             if (inStock >= requested.quantity) {
                 var stockUpdate = inStock - parseInt(requested.quantity);
                 var purchaseCost = unitPrice * parseInt(requested.quantity);
+                var salesRevenue = sales + purchaseCost;
 
-                connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: stockUpdate},{item_id: requested.item_id}], 
+                connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: stockUpdate, product_sales: salesRevenue}, {item_id: requested.item_id}], 
                     function(err, res) {
                         console.log("Your total cost for " + requested.quantity + " " + productName + " is $" + purchaseCost + "\nThank you for shopping with WHAMazon!\n--------------------------------------------------\n");
                     }
@@ -93,8 +95,7 @@ function purchase() {
             } else {
                 console.log("Sorry, we do not have " + requested.quantity + " of " + productName + " in stock.\n");
             }
-            //setTimeout(function(){currentInventory()},8000);
-            currentInventory();
+            setTimeout(function(){currentInventory()},2000);
         });
     });
 }
