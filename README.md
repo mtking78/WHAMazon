@@ -1,10 +1,25 @@
-Challenge #3: Supervisor View (Final Level)
+# CLI - MySQL app "WHAMazon"
 
-    - When a supervisor selects View Product Sales by Department, the app should display a summarized table in their terminal/bash window. Use the table below as a guide.
+### Simulate a store's inventory and sales with MySQL and the Node command line interface.
+WHAMazaon has three different applications:
+1. **Customer** - Allows customers to make orders, and in turn, depletes stock from the store's inventory. The customer will be informed of the toal cost of their purchase while the sales revenue is updated for the product's department.
+2. **Manager** - Allows a manager to choose from 4 options:
+  * View Products for Sale - See the entire inventory, with stock quantity included.
+  * View Low Inventory - Only display inventroy with 5 or fewer units in stock.
+  * Add to Inventory - Add stock for any existing item.
+  * Add New Product - Create a new product to introduce to the store's database.
+3. **Supervisor** - Allows a supervisor to choose from 2 options (second pending.)
+  * Create a new department of products for the store's database.
+  [ ] View sales by department, including profit margins from sales/overhead differences.
 
-The total_profit column should be calculated on the fly using the difference between over_head_costs and product_sales. total_profit should not be stored in any database. You should use a custom alias.
-If you can't get the table to display properly after a few hours, then feel free to go back and just add total_profit to the departments table.
+### Languages & Programs Used
+* JavaScript
+* Nodejs
+* MySQL
 
-Hint: You may need to look into aliases in MySQL.
-Hint: You may need to look into GROUP BYs.
-Hint: You may need to look into JOINS.
+### Required Node packages and other sources
+* [mysql](https://www.npmjs.com/package/mysql)
+* [Inquirer.js](https://www.npmjs.com/package/inquirer#examples)
+* [CLI Table](https://www.npmjs.com/package/cli-table)
+* [colors.js](https://www.npmjs.com/package/colors)
+  * [LICEcap Screen recording to gif application](https://www.cockos.com/licecap/)
