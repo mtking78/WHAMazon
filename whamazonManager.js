@@ -1,4 +1,3 @@
-// initialize with "npm init -y", "npm install mysql", "npm install inquirer"
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 var Table = require("cli-table");
@@ -23,7 +22,7 @@ function manager() {
         {
             name: "action",
             type: "list",
-            message: "Welcome, master.  What would you like to do?",
+            message: "WHAMazon Manager Terminal - Select an Action",
             choices: [
                 "View Products for Sale",
                 "View Low Inventory",
@@ -47,7 +46,7 @@ function manager() {
                 addNewProduct();
                 break;
             case "End Session":
-                console.log("Goodbye, master.\n***** CONNECTION TERMINATED *****\n");
+                console.log("Goodbye.\n***** CONNECTION TERMINATED *****\n");
                 connection.end();
         }
     });

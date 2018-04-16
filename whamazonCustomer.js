@@ -1,4 +1,3 @@
-// initialize with "npm init -y", "npm install mysql", "npm install inquirer"
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 var Table = require("cli-table");
