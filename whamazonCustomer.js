@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "2631mountain",
+    password: "",
     database: "whamazon_db"
 });
 
@@ -87,7 +87,7 @@ function purchase() {
 
                 connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: stockUpdate, product_sales: salesRevenue}, {item_id: requested.item_id}], 
                     function(err, res) {
-                        console.log("Your total cost for " + requested.quantity + " " + productName + " is $" + purchaseCost + "\nThank you for shopping with WHAMazon!\n--------------------------------------------------\n");
+                        console.log("Your total cost for " + requested.quantity + " " + productName + " is $" + purchaseCost.toFixed(2) + "\nThank you for shopping with WHAMazon!\n--------------------------------------------------\n");
                     }
                 );
             // If not, the app should log a phrase like Insufficient quantity!, and then prevent the order from going through.

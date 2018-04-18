@@ -44,9 +44,24 @@ function supervisor() {
     });
 }
 
-// function viewDepartmentSales() {
+function viewDepartmentSales() {
+    connection.query("SELECT department_name, SUM(product_sales) FROM whamazon_db.products GROUP BY department_name", function(err, res) {
 
-// }
+        if (err) throw err;
+        console.log(res);
+        // // cli-table code
+        // var table = new Table({
+        //     head: ["Department", "Total Sales"],
+        //     colWidths: [30, 30]
+        // });
+
+        // for (var i = 0; i < res.length; i++) {
+        //     table.push([res[i].department_name, res[i].product_sales]);
+        // };
+
+        // console.log(table.toString() + "\n");
+    })
+}
 
 function createDepartment() {
     inquirer.prompt([
