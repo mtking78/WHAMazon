@@ -18,7 +18,7 @@ WHAMazaon has three different applications:
 ------------------------------------------------------------------------------------------
 3. **Supervisor** - Allows a supervisor to choose from 2 options (second pending.)
     * Create a new department of products for the store's database.
-    - [ ] View sales by department, including profit margins from sales/overhead differences.
+    * View sales by department, including profit margins from sales/overhead differences. (Incomplete)
 ------------------------------------------------------------------------------------------
 ## To Install
 * Git Clone the repository
@@ -36,4 +36,4 @@ WHAMazaon has three different applications:
 * [mysql](https://www.npmjs.com/package/mysql)
 * [Inquirer.js](https://www.npmjs.com/package/inquirer#examples)
 * [CLI Table](https://www.npmjs.com/package/cli-table)
-* [LICEcap Screen recording to gif application](https://www.cockos.com/licecap/)
+* [LICEcap](https://www.cockos.com/licecap/)(Screen recording to gif application)
