@@ -1,8 +1,7 @@
 # CLI - MySQL app "WHAMazon"
 
 ### Simulate a store's inventory and sales with MySQL and the Node command line interface.
-* **Install the required packages and create a database with both tables using the provided schemas, then run any of the three programs by typing their names in the command line:**
-  - ***"node .\whamazonCustomer.js" , "node .\whamazonManager.js" , "node .\whamazonSupervisor.js"***
+
 WHAMazaon has three different applications:
 
 1. **Customer** - Allows customers to make orders, and in turn, depletes stock from the store's inventory. The customer will be informed of the toal cost of their purchase while the sales revenue is updated for the product's department.
@@ -21,6 +20,13 @@ WHAMazaon has three different applications:
     * Create a new department of products for the store's database.
     - [ ] View sales by department, including profit margins from sales/overhead differences.
 ------------------------------------------------------------------------------------------
+## To Install
+* Git Clone the repository
+* Navigate to the folder where the repository exists using Git Bash or Terminal.
+* Run the command `npm install` to download the required dependencies.
+* Run the provided schemas in MySQL to create the database and tables necessary for the programs to interact with.
+* Then run the command `node .\whamazonCustomer.js`, `node .\whamazonManager.js`, or `node .\whamazonSupervisor.js`to run the program.
+
 ### Languages & Programs Used
   * JavaScript
   * Nodejs
